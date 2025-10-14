@@ -76,7 +76,7 @@ public class Controller2D {
             public void mouseReleased(MouseEvent me) {
                 switch (mode) {
                     case Line:
-                        if(indexActiveLine == -1)
+                        if (indexActiveLine == -1)
                             return;
                         if (shiftMode)
                             break;
@@ -94,8 +94,7 @@ public class Controller2D {
             public void mouseDragged(MouseEvent me) {
                 switch (mode) {
                     case Line:
-                        if(indexActiveLine == -1)
-                        {
+                        if (indexActiveLine == -1) {
                             return;
                         }
                         if (indexActiveLine == lines.size()) {
@@ -190,13 +189,11 @@ public class Controller2D {
         switch (mode) {
             case Line:
                 Line activeLine;
-                if(indexActiveLine < lines.size() && indexActiveLine >= 0) {
+                if (indexActiveLine < lines.size() && indexActiveLine >= 0) {
                     activeLine = lines.get(indexActiveLine);
-                }
-                else if(indexActiveLine > lines.size()){
+                } else if (indexActiveLine > lines.size()) {
                     activeLine = lines.get(indexActiveLine - 1);
-                }
-                else{
+                } else {
                     return;
                 }
                 activeLine.colorGradient = colorGradient;
@@ -204,13 +201,11 @@ public class Controller2D {
                 break;
             case Polygon:
                 Polygon activePolygon;
-                if(indexActivePolygon < polygons.size()) {
+                if (indexActivePolygon < polygons.size()) {
                     activePolygon = polygons.get(indexActivePolygon);
-                }
-                else if(indexActivePolygon > polygons.size()){
+                } else if (indexActivePolygon > polygons.size()) {
                     activePolygon = polygons.get(indexActivePolygon - 1);
-                }
-                else{
+                } else {
                     return;
                 }
                 activePolygon.colorGradient = colorGradient;

@@ -32,8 +32,11 @@ public abstract class LineRasterizer {
             float t = (float)(index - start) / (max - start);
             return Color.HSBtoRGB(t, 1f, 1f);
         } else if (isInterpolation) {
-            float t = (float)(index - start) / (max - start);
-            return LerpHSB(Color.RGBtoHSB(colorGradient.startColor.getRed(), colorGradient.startColor.getGreen(), colorGradient.startColor.getBlue(), null), Color.RGBtoHSB(colorGradient.endColor.getRed(), colorGradient.endColor.getGreen(), colorGradient.endColor.getBlue(), null), t);
+            if(colorGradient != null) {
+                float t = (float) (index - start) / (max - start);
+                return LerpHSB(Color.RGBtoHSB(colorGradient.startColor.getRed(), colorGradient.startColor.getGreen(), colorGradient.startColor.getBlue(), null), Color.RGBtoHSB(colorGradient.endColor.getRed(), colorGradient.endColor.getGreen(), colorGradient.endColor.getBlue(), null), t);
+            }
+            return 0xAAFFAA;
         } else {
             return color;
         }

@@ -14,6 +14,7 @@ public class LineRasterizerTrivial extends LineRasterizer {
     }
     @Override
     public void rasterize(int x1, int y1, int x2, int y2, int cl) {
+        boolean pointingLeft = false;
         if(cl == -1)
         {
             isInterpolation = false;
@@ -32,7 +33,7 @@ public class LineRasterizerTrivial extends LineRasterizer {
             if (y1 > y2)
             {
                 for (int i = y2; i < y1; i++) {
-                    raster.setPixel(x1, i, getColor(cl, i, y2, y1));
+                    raster.setPixel(x1, i, getColor(cl, i, y1, y2));
                 }
             }
             else {
@@ -50,13 +51,14 @@ public class LineRasterizerTrivial extends LineRasterizer {
             temp = y1;
             y1 = y2;
             y2 = temp;
+            pointingLeft = true;
         }
         float k = (float) (y2 - y1) / (x2 - x1);
         float q = y1 - k * x1;
         if(k > 1)
         {
             for (int i = y1; i <= y2; i++) {
-                raster.setPixel((int) ((i - q) / k), i, getColor(cl, i, y1, y2));
+                raster.setPixel((int) ((i - q) / k), i, pointingLeft ? getColor(cl, i, y2, y1) : getColor(cl, i, y1, y2));
             }
         }
         else if(k < -1)
@@ -70,12 +72,12 @@ public class LineRasterizerTrivial extends LineRasterizer {
             k = (float) (y2 - y1) / (x2 - x1);
             q = y1 - k * x1;
             for (int i = y1; i <= y2; i++) {
-                raster.setPixel((int) ((i - q) / k), i, getColor(cl, i, y1, y2));
+                raster.setPixel((int) ((i - q) / k), i, pointingLeft ? getColor(cl, i, y1, y2) : getColor(cl, i, y2, y1));
             }
         }
         else {
             for (int i = x1; i <= x2; i++) {
-                raster.setPixel(i, (int) (k * i + q), getColor(cl, i, x1, x2));
+                raster.setPixel(i, (int) (k * i + q), pointingLeft ? getColor(cl, i, x2, x1) : getColor(cl, i, x1, x2));
             }
         }
         isInterpolation = false;

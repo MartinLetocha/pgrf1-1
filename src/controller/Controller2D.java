@@ -140,6 +140,8 @@ public class Controller2D {
                         break;
                     case KeyEvent.VK_SHIFT:
                         if (mode != Mode.Polygon) {
+                            if(indexActiveLine == -1 || indexActiveLine == lines.size())
+                                return;
                             shiftMode = true;
                             var activeLine = lines.get(indexActiveLine);
                             shiftAlign(activeLine.End.X, activeLine.End.Y, activeLine);

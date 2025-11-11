@@ -2,5 +2,7 @@ package controller;
 
 public enum Mode {
     Line,
-    Polygon
+    Polygon,
+    CuttingPolygon,
+    Rectangle
 }

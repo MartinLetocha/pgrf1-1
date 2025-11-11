@@ -1,6 +1,9 @@
 package raster;
 
+import objects.Point;
+
 import java.awt.image.BufferedImage;
+import java.util.OptionalInt;
 
 public class RasterBufferedImage implements Raster {
     private BufferedImage image;
@@ -30,8 +33,16 @@ public class RasterBufferedImage implements Raster {
     }
 
     @Override
-    public int getPixel(int x, int y) {
-        return image.getRGB(x, y);
+    public OptionalInt getPixel(int x, int y) {
+        if (x < 0 || x >= width || y < 0 || y >= height)
+            return OptionalInt.empty();
+        int color = image.getRGB(x, y);
+        return OptionalInt.of(color);
+    }
+
+    @Override
+    public OptionalInt getPixel(Point point) {
+        return getPixel(point.X, point.Y);
     }
 
     @Override

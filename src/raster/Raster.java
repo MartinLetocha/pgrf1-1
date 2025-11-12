@@ -13,4 +13,6 @@ public interface Raster {
     int getWidth();
     int getHeight();
     void clear();
+
+    OptionalInt getPixelAlt(int x, int y);
 }

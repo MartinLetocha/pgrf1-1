@@ -18,10 +18,12 @@ import special.LineAligner;
 import view.Panel;
 import view.Window;
 
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.OptionalInt;
 
 import static rasterize.PolygonRasterizer.drawPolygon;
 
@@ -61,6 +63,7 @@ public class Controller2D {
     private Window window; //why no events :(
     //fills
     private ArrayList<Filler> fillers;
+    private boolean seedIsBorder = false;
 
     public Controller2D(Panel panel, Window window) {
         this.panel = panel;
@@ -77,7 +80,13 @@ public class Controller2D {
             public void mousePressed(MouseEvent me) {
                 if (me.getButton() == MouseEvent.BUTTON3 && mode != Mode.CuttingPolygon) {
                     if (fillMode == FillMode.SeedFill) {
-                        fillers.add(new SeedFiller(panel.getRaster(), new Point(me.getX(), me.getY()), color, fillMode));
+                        if(!seedIsBorder) {
+                            fillers.add(new SeedFiller(panel.getRaster(), new Point(me.getX(), me.getY()), color, OptionalInt.empty(), fillMode));
+                        }
+                        else{
+                            Color borderColor = window.selectBorderColor();
+                            fillers.add(new SeedFiller(panel.getRaster(), new Point(me.getX(), me.getY()), color, OptionalInt.of(borderColor.getRGB()), fillMode));
+                        }
                     }
                 }
                 switch (mode) {
@@ -322,8 +331,16 @@ public class Controller2D {
                         drawScene();
                         break;
                     case KeyEvent.VK_N:
+                        if(fillMode == FillMode.SeedFill && !seedIsBorder)
+                        {
+                            seedIsBorder = true;
+                            window.changeTitle(mode.toString() + " " + FillMode.SeedFill + " Border");
+                        }
+                        else{
+                            seedIsBorder = false;
+                            window.changeTitle(mode.toString() + " " + FillMode.SeedFill + " Background");
+                        }
                         fillMode = FillMode.SeedFill;
-                        window.changeTitle(mode.toString() + " " + fillMode.toString());
                         drawScene();
                         break;
                     case KeyEvent.VK_C:

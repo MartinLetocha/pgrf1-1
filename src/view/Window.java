@@ -29,6 +29,11 @@ public class Window extends JFrame {
         return new ColorGradient(color1, color2);
     }
 
+    public Color selectBorderColor()
+    {
+        return JColorChooser.showDialog(this, "Choose a color", Color.WHITE);
+    }
+
     public void changeTitle(String title) {
         setTitle(baseTitle + " " + title);
     }

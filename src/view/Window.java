@@ -24,14 +24,14 @@ public class Window extends JFrame {
     }
     public ColorGradient selectColor()
     {
-        var color1 = JColorChooser.showDialog(this, "Choose a color", Color.WHITE);
-        var color2 = JColorChooser.showDialog(this, "Choose a second color", color1);
+        var color1 = JColorChooser.showDialog(this, "Choose a color.", Color.WHITE);
+        var color2 = JColorChooser.showDialog(this, "Choose a second color.", color1);
         return new ColorGradient(color1, color2);
     }
 
     public Color selectBorderColor()
     {
-        return JColorChooser.showDialog(this, "Choose a color", Color.WHITE);
+        return JColorChooser.showDialog(this, "Choose the border color.", Color.WHITE);
     }
 
     public void changeTitle(String title) {

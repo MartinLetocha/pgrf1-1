@@ -85,6 +85,8 @@ public class Controller2D {
                         }
                         else{
                             Color borderColor = window.selectBorderColor();
+                            if(borderColor == null)
+                                return;
                             fillers.add(new SeedFiller(panel.getRaster(), new Point(me.getX(), me.getY()), color, OptionalInt.of(borderColor.getRGB()), fillMode));
                         }
                     }
@@ -319,9 +321,8 @@ public class Controller2D {
                         break;
                     case KeyEvent.VK_M:
                         fillMode = FillMode.ScanLine;
-                        Polygon activePoly = polygons.get(indexActivePolygon);
-                        if(!polygons.isEmpty() && activePoly.getPointsSize() > 0) {
-                            fillers.add(new ScanLineFiller(activePoly, lineRasterizer, color, fillMode));
+                        if(!polygons.isEmpty() && polygons.get(indexActivePolygon).getPointsSize() > 0) {
+                            fillers.add(new ScanLineFiller(polygons.get(indexActivePolygon), lineRasterizer, color, fillMode));
                         }
                         if (mode == Mode.Line) {
                             window.changeTitle("ScanLine needs a new polygon.... Also, easter egg!");
@@ -392,6 +393,7 @@ public class Controller2D {
         polygons.clear();
         lines.clear();
         fillers.clear();
+        indexActiveRectangle = 0;
         indexActiveLine = -1;
         firstPoint = null;
         indexActivePolygon = 0;
@@ -403,6 +405,7 @@ public class Controller2D {
             Polygon polygon = new Polygon(color);
             polygons.add(polygon);
         }
+        rectangles.add(new Rectangle(color));
     }
 
 

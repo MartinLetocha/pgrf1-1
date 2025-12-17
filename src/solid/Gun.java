@@ -3,70 +3,66 @@ package solid;
 import transforms.Point3D;
 import transforms.Vec3D;
 
-public class Gun extends Solid {
+public class Gun extends SolidExtended {
     public Gun() {
 
-        // ========================
-        // BLOCK 1 — GUN BODY
-        // ========================
+        setColor(0x444444);
+        subdivideLine = 2;
+        SolidPart gunBody = new SolidPart();
         double bw = 0.6;  // half-width
         double bh = 0.15; // half-height
         double bd = 0.1;  // half-depth
 
-        int bodyStart = vertexBuffer.size();
+        int bodyStart = gunBody.vertexBuffer.size();
 
         // 8 corners of the body
-        vertexBuffer.add(new Point3D(-bw,  bh, -bd)); // 0
-        vertexBuffer.add(new Point3D( bw,  bh, -bd)); // 1
-        vertexBuffer.add(new Point3D( bw, -bh, -bd)); // 2
-        vertexBuffer.add(new Point3D(-bw, -bh, -bd)); // 3
+        gunBody.vertexBuffer.add(new Point3D(-bw,  bh, -bd)); // 0
+        gunBody.vertexBuffer.add(new Point3D( bw,  bh, -bd)); // 1
+        gunBody.vertexBuffer.add(new Point3D( bw, -bh, -bd)); // 2
+        gunBody.vertexBuffer.add(new Point3D(-bw, -bh, -bd)); // 3
 
-        vertexBuffer.add(new Point3D(-bw,  bh,  bd)); // 4
-        vertexBuffer.add(new Point3D( bw,  bh,  bd)); // 5
-        vertexBuffer.add(new Point3D( bw, -bh,  bd)); // 6
-        vertexBuffer.add(new Point3D(-bw, -bh,  bd)); // 7
+        gunBody.vertexBuffer.add(new Point3D(-bw,  bh,  bd)); // 4
+        gunBody.vertexBuffer.add(new Point3D( bw,  bh,  bd)); // 5
+        gunBody.vertexBuffer.add(new Point3D( bw, -bh,  bd)); // 6
+        gunBody.vertexBuffer.add(new Point3D(-bw, -bh,  bd)); // 7
 
         // Body edges
-        addBoxEdges(bodyStart);
+        gunBody.addBoxEdges(bodyStart);
 
 
-        // ========================
-        // BLOCK 2 — HANDLE
-        // ========================
+        SolidPart handle = new SolidPart();
         double hw = 0.12;
         double hh = 0.3;
         double hd = 0.1;
 
-        int handleStart = vertexBuffer.size();
+        int handleStart = handle.vertexBuffer.size();
 
         // Shift handle down and slightly back
         double hx = -0.3;
         double hy = -0.3 - bh; // below body
         double hz = 0;
 
-        vertexBuffer.add(new Point3D(hx - hw, hy + hh, hz - hd)); // 0
-        vertexBuffer.add(new Point3D(hx + hw, hy + hh, hz - hd)); // 1
-        vertexBuffer.add(new Point3D(hx + hw, hy - hh, hz - hd)); // 2
-        vertexBuffer.add(new Point3D(hx - hw, hy - hh, hz - hd)); // 3
+        handle.vertexBuffer.add(new Point3D(hx - hw, hy + hh, hz - hd)); // 0
+        handle.vertexBuffer.add(new Point3D(hx + hw, hy + hh, hz - hd)); // 1
+        handle.vertexBuffer.add(new Point3D(hx + hw, hy - hh, hz - hd)); // 2
+        handle.vertexBuffer.add(new Point3D(hx - hw, hy - hh, hz - hd)); // 3
 
-        vertexBuffer.add(new Point3D(hx - hw, hy + hh, hz + hd)); // 4
-        vertexBuffer.add(new Point3D(hx + hw, hy + hh, hz + hd)); // 5
-        vertexBuffer.add(new Point3D(hx + hw, hy - hh, hz + hd)); // 6
-        vertexBuffer.add(new Point3D(hx - hw, hy - hh, hz + hd)); // 7
+        handle.vertexBuffer.add(new Point3D(hx - hw, hy + hh, hz + hd)); // 4
+        handle.vertexBuffer.add(new Point3D(hx + hw, hy + hh, hz + hd)); // 5
+        handle.vertexBuffer.add(new Point3D(hx + hw, hy - hh, hz + hd)); // 6
+        handle.vertexBuffer.add(new Point3D(hx - hw, hy - hh, hz + hd)); // 7
 
         // Handle edges
-        addBoxEdges(handleStart);
+        handle.addBoxEdges(handleStart);
 
 
-        // ========================
-        // CYLINDER BARREL
-        // ========================
+        SolidPart barrel = new SolidPart();
         int barrelSegments = 8;
         double r = 0.1;      // radius
         double length = 0.6; // barrel length
         double bx = bw; // front of gun body
 
-        int barrelStart = vertexBuffer.size();
+        int barrelStart = barrel.vertexBuffer.size();
 
         // Two rings: back and front
         for (int i = 0; i < barrelSegments; i++) {
@@ -76,7 +72,7 @@ public class Gun extends Solid {
             double z = Math.sin(angle) * r;
 
             // Back ring
-            vertexBuffer.add(new Point3D(x, y, z));
+            barrel.vertexBuffer.add(new Point3D(x, y, z));
         }
         for (int i = 0; i < barrelSegments; i++) {
             double angle = (Math.PI * 2.0 * i) / barrelSegments;
@@ -85,7 +81,7 @@ public class Gun extends Solid {
             double z = Math.sin(angle) * r;
 
             // Front ring
-            vertexBuffer.add(new Point3D(x, y, z));
+            barrel.vertexBuffer.add(new Point3D(x, y, z));
         }
 
         // Cylinder edges
@@ -93,17 +89,25 @@ public class Gun extends Solid {
             int next = (i + 1) % barrelSegments;
 
             // Connect back ring
-            addIndices(barrelStart + i, barrelStart + next);
+            barrel.addIndices(barrelStart + i, barrelStart + next);
 
             // Connect front ring
-            addIndices(barrelStart + barrelSegments + i,
+            barrel.addIndices(barrelStart + barrelSegments + i,
                     barrelStart + barrelSegments + next);
 
             // Connect each pair
-            addIndices(barrelStart + i,
+            barrel.addIndices(barrelStart + i,
                     barrelStart + barrelSegments + i);
         }
 
-        setColor(0x444444);
+
+        barrel.setColor(0x444444);
+        handle.setColor(0x444444);
+        gunBody.setColor(0x444444);
+
+        parts.add(barrel);
+        parts.add(handle);
+        parts.add(gunBody);
+        createTotal();
     }
 }

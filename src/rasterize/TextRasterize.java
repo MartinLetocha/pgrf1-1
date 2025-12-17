@@ -2,6 +2,8 @@ package rasterize;
 
 import raster.RasterBufferedImage;
 
+import java.awt.*;
+
 public class TextRasterize extends LineRasterizer{
 
     public TextRasterize(RasterBufferedImage raster) {
@@ -9,6 +11,11 @@ public class TextRasterize extends LineRasterizer{
     }
     public void rasterize(int x, int y, String text) {
         var g = raster.getImage().getGraphics();
+        g.drawString(text, x, y);
+    }
+    public void rasterize(int x, int y, String text, int size) {
+        var g = raster.getImage().getGraphics();
+        g.setFont(new Font("Arial", Font.PLAIN, size));
         g.drawString(text, x, y);
     }
 }

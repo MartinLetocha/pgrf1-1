@@ -3,7 +3,7 @@ package solid;
 import transforms.Point3D;
 
 public class Cube extends Solid{
-    public Cube() {
+    public Cube(int color) {
         vertexBuffer.add(new Point3D(-0.5,-0.5,-0.5));
         vertexBuffer.add(new Point3D(0.5,-0.5,-0.5));
         vertexBuffer.add(new Point3D(-0.5,0.5,-0.5));
@@ -30,6 +30,6 @@ public class Cube extends Solid{
         addIndices(5, 7);
         addIndices(6, 7);
 
-        setColor(0xFF00FF);
+        setColor(color);
     }
 }

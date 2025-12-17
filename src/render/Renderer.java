@@ -130,15 +130,8 @@ public class Renderer {
             renderSolid(solid);
         }
     }
-
-    public Mat4 getViewMatrix() {
-        return viewMatrix;
-    }
     public void setViewMatrix(Mat4 viewMatrix) {
         this.viewMatrix = viewMatrix;
-    }
-    public Mat4 getProjectionMatrix() {
-        return projectionMatrix;
     }
     public void setProjectionMatrix(Mat4 projectionMatrix) {
         this.projectionMatrix = projectionMatrix;

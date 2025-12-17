@@ -69,27 +69,4 @@ public class SolidPart extends Solid {
         outIndices.add(prev);
         outIndices.add(index2);
     }
-
-    //old
-    public void makeMidPoint(ArrayList<Integer> list, int index1, int index2, int subdivisionCount)
-    {
-        list.add(index1);
-        list.add(nextIndex);
-        list.add(nextIndex);
-        list.add(index2);
-        createMidpoint(index1, index2);
-        nextIndex ++;
-    }
-    private void createMidpoint(int i1, int i2) {
-        Point3D p1 = vertexBuffer.get(i1);
-        Point3D p2 = vertexBuffer.get(i2);
-
-        Point3D mid = new Point3D(
-                (p1.getX() + p2.getX()) * 0.5,
-                (p1.getY() + p2.getY()) * 0.5,
-                (p1.getZ() + p2.getZ()) * 0.5
-        );
-
-        altVertexBuffer.add(mid);
-    }
 }

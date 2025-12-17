@@ -18,4 +18,10 @@ public class TextRasterize extends LineRasterizer{
         g.setFont(new Font("Arial", Font.PLAIN, size));
         g.drawString(text, x, y);
     }
+    public void rasterize(int x, int y, String text, int size, Color color) {
+        var g = raster.getImage().getGraphics();
+        g.setColor(color);
+        g.setFont(new Font("Arial", Font.PLAIN, size));
+        g.drawString(text, x, y);
+    }
 }

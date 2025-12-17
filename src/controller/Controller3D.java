@@ -55,6 +55,7 @@ public class Controller3D {
     private Point3DFix scaleAxis = new Point3DFix(1, 0, 0);
     //animations
     private boolean jumping = false;
+    private boolean jumpingSolid = false;
     private boolean keepJumping = false;
     private Thread jumpingThread;
     private boolean moving = false;
@@ -290,6 +291,10 @@ public class Controller3D {
                             restartScene();
                         }
                         break;
+                    case KeyEvent.VK_SPACE:
+                        if (!jumpingSolid)
+                            new Thread(() -> jumpSolid(activeSolid, 0.5, 1)).start();
+                    break;
                 }
                 if (escaped)
                     return;
@@ -416,10 +421,6 @@ public class Controller3D {
                 Vec3D cameraPos = camera.getPosition();
                 camera = camera.withPosition(new Vec3D(cameraPos.getX(), cameraPos.getY(), 1));
             }
-            if (keys[KeyEvent.VK_SPACE]) {
-                if (!jumping)
-                    new Thread(() -> jump(activeSolid, 0.5, 1)).start();
-            }
             if (keys[KeyEvent.VK_LEFT]) activeSolid.moveModel(-SPEED * speedBoost, 0, 0);
             if (keys[KeyEvent.VK_RIGHT]) activeSolid.moveModel(SPEED * speedBoost, 0, 0);
             if (keys[KeyEvent.VK_UP]) activeSolid.moveModel(0, SPEED * speedBoost, 0);
@@ -518,6 +519,33 @@ public class Controller3D {
             }
         }
         jumping = false;
+    }
+    private void jumpSolid(Solid target, double targetZ, int seconds) {
+        jumpingSolid = true;
+        int frames = seconds * 60;
+        int halfway = frames / 2;
+        double step = targetZ / halfway;
+
+        long frameTime = (long) (1000.0 / 60.0);
+
+        // UP
+        for (int i = 0; i < halfway; i++) {
+            target.moveModel(0, 0, step);
+            try {
+                Thread.sleep(frameTime);
+            } catch (InterruptedException ignored) {
+            }
+        }
+
+        // DOWN
+        for (int i = 0; i < halfway / 2; i++) {
+            target.moveModel(0, 0, -step * 2);
+            try {
+                Thread.sleep(frameTime);
+            } catch (InterruptedException ignored) {
+            }
+        }
+        jumpingSolid = false;
     }
 
     private void drawScene() {
